@@ -1,0 +1,1 @@
+{"version":3,"file":"requireUserId.d.ts","sourceRoot":"","sources":["../../src/middleware/requireUserId.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,YAAY,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAE/D,wBAAgB,aAAa,CAC3B,GAAG,EAAE,OAAO,EACZ,GAAG,EAAE,QAAQ,EACb,IAAI,EAAE,YAAY,GACjB,IAAI,CASN"}

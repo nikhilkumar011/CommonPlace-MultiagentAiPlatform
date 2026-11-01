@@ -1,0 +1,1 @@
+{"version":3,"file":"chatAuth.d.ts","sourceRoot":"","sources":["../../src/middleware/chatAuth.ts"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,YAAY,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AA8B/D,wBAAsB,eAAe,CACnC,GAAG,EAAE,OAAO,EACZ,GAAG,EAAE,QAAQ,EACb,IAAI,EAAE,YAAY,GACjB,OAAO,CAAC,IAAI,CAAC,CAwDf"}
