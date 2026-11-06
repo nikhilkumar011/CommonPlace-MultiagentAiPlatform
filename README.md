@@ -123,7 +123,7 @@ provider keys for the agents you plan to use:
 ```powershell
 if (-not (Test-Path backend\.env)) { Copy-Item backend\.env.example backend\.env }
 Set-Location backend
-docker compose up --build -d
+docker compose --parallel 1 up --build -d
 docker compose ps
 ```
 
@@ -132,6 +132,9 @@ gateway is exposed at `http://localhost:3000`; database and service data are
 kept in named volumes. By default MongoDB runs in Compose; set
 `COMPOSE_MONGO_URI` in `backend/.env` to use an external MongoDB. Shut down
 with `docker compose down`.
+
+The `--parallel 1` option builds one service image at a time to reduce memory
+and CPU pressure on small servers.
 
 ## Deploy the frontend to Vercel
 
