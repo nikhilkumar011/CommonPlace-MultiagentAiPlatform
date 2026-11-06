@@ -34,15 +34,31 @@ function logAgentRequest(
   next();
 }
 
-const authServiceUrl =
-  process.env.AUTH_SERVICE_URL ??
-  `http://localhost:${process.env.AUTH_SERVICE_PORT || 3001}`;
-const chatServiceUrl =
-  process.env.CHAT_SERVICE_URL ??
-  `http://localhost:${process.env.CHAT_SERVICE_PORT || 3002}`;
-const agentServiceUrl =
-  process.env.AGENT_SERVICE_URL ??
-  `http://localhost:${process.env.AGENT_SERVICE_PORT || 3003}`;
+function getServiceUrl(
+  configuredUrl: string | undefined,
+  serviceName: string,
+  port: string | number,
+): string {
+  const host =
+    process.env.NODE_ENV === 'production' ? serviceName : 'localhost';
+  return configuredUrl ?? `http://${host}:${port}`;
+}
+
+const authServiceUrl = getServiceUrl(
+  process.env.AUTH_SERVICE_URL,
+  'auth',
+  process.env.AUTH_SERVICE_PORT || 3001,
+);
+const chatServiceUrl = getServiceUrl(
+  process.env.CHAT_SERVICE_URL,
+  'chat',
+  process.env.CHAT_SERVICE_PORT || 3002,
+);
+const agentServiceUrl = getServiceUrl(
+  process.env.AGENT_SERVICE_URL,
+  'agent',
+  process.env.AGENT_SERVICE_PORT || 3003,
+);
 
 app.use('/auth', proxy(authServiceUrl));
 app.use(cookieParser());

@@ -29,7 +29,7 @@ services:
         SERVICE_PATH: services/auth
     restart: unless-stopped
     environment:
-      NODE_ENV: ${NODE_ENV:-production}
+      NODE_ENV: production
       AUTH_SERVICE_PORT: ${AUTH_SERVICE_PORT:-3001}
       MONGO_URI: ${COMPOSE_MONGO_URI:-mongodb://mongodb:27017/commonplace}
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in backend/.env}
@@ -47,7 +47,7 @@ services:
         SERVICE_PATH: services/chat
     restart: unless-stopped
     environment:
-      NODE_ENV: ${NODE_ENV:-production}
+      NODE_ENV: production
       CHAT_SERVICE_PORT: ${CHAT_SERVICE_PORT:-3002}
       MONGO_URI: ${COMPOSE_MONGO_URI:-mongodb://mongodb:27017/commonplace}
     depends_on:
@@ -61,7 +61,7 @@ services:
         SERVICE_PATH: services/agent
     restart: unless-stopped
     environment:
-      NODE_ENV: ${NODE_ENV:-production}
+      NODE_ENV: production
       AGENT_SERVICE_PORT: ${AGENT_SERVICE_PORT:-3003}
       REDIS_URL: redis://redis:6379
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
@@ -84,7 +84,7 @@ services:
         SERVICE_PATH: gateaway
     restart: unless-stopped
     environment:
-      NODE_ENV: ${NODE_ENV:-production}
+      NODE_ENV: production
       GATEAWAY_PORT: ${GATEAWAY_PORT:-3000}
       AUTH_SERVICE_URL: http://auth:${AUTH_SERVICE_PORT:-3001}
       CHAT_SERVICE_URL: http://chat:${CHAT_SERVICE_PORT:-3002}
