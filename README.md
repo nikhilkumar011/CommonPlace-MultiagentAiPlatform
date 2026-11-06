@@ -92,7 +92,8 @@ secrets in logs, screenshots, or source control.
 | `CHAT_SERVICE_PORT` | Chat service | Defaults to `3002` if unset. |
 | `AGENT_SERVICE_PORT` | Agent service | Defaults to `3003` if unset. |
 | `NODE_ENV` | Backend services | Usually `development` locally. |
-| `MONGO_URI` | Auth and chat services | MongoDB connection string. |
+| `MONGO_URI` | Auth and chat services | MongoDB connection string for local runs. |
+| `COMPOSE_MONGO_URI` | Docker Compose | Optional external MongoDB URI; defaults to the included MongoDB container. |
 | `JWT_SECRET` | Auth and gateway | Use a long, random secret. |
 | `REDIS_URL` | Sessions and rate limits | Redis connection URL. |
 | `GEMINI_API_KEY` | Chat, coding, PDF, routing | Gemini API key. |
@@ -113,6 +114,38 @@ Optional model overrides:
 The Gemini embedding model used for PDF indexing is `gemini-embedding-001`.
 Create the Pinecone index with a dimension supported by that embedding model;
 the agent reads the index dimension and requests matching embeddings.
+
+## Run the backend with Docker Compose
+
+Create `backend/.env` from the example if needed, set `JWT_SECRET`, and add
+provider keys for the agents you plan to use:
+
+```powershell
+if (-not (Test-Path backend\.env)) { Copy-Item backend\.env.example backend\.env }
+Set-Location backend
+docker compose up --build -d
+docker compose ps
+```
+
+Compose runs the gateway, auth, chat, agent, MongoDB, and Redis. Only the
+gateway is exposed at `http://localhost:3000`; database and service data are
+kept in named volumes. By default MongoDB runs in Compose; set
+`COMPOSE_MONGO_URI` in `backend/.env` to use an external MongoDB. Shut down
+with `docker compose down`.
+
+## Deploy the frontend to Vercel
+
+Set the Vercel project root to `frontend`. Configure
+`BACKEND_API_URL=http://16.178.242.208:3000` in the Vercel project settings for
+the environments you use, then redeploy. The frontend calls same-origin
+`/api` paths and Next.js proxies those requests to the backend, avoiding
+browser CORS and mixed-content restrictions. The production build uses this
+EC2 address as a fallback if the variable is omitted.
+
+The EC2 security group and host firewall must allow inbound TCP port `3000`.
+For production, put the backend behind HTTPS and change `BACKEND_API_URL` to
+its HTTPS endpoint; the current HTTP connection from Vercel to EC2 is not
+encrypted.
 
 ## Install dependencies
 

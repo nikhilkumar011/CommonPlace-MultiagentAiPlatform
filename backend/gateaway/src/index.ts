@@ -34,12 +34,22 @@ function logAgentRequest(
   next();
 }
 
-app.use('/auth', proxy(`http://localhost:${process.env.AUTH_SERVICE_PORT || 3001}`));
+const authServiceUrl =
+  process.env.AUTH_SERVICE_URL ??
+  `http://localhost:${process.env.AUTH_SERVICE_PORT || 3001}`;
+const chatServiceUrl =
+  process.env.CHAT_SERVICE_URL ??
+  `http://localhost:${process.env.CHAT_SERVICE_PORT || 3002}`;
+const agentServiceUrl =
+  process.env.AGENT_SERVICE_URL ??
+  `http://localhost:${process.env.AGENT_SERVICE_PORT || 3003}`;
+
+app.use('/auth', proxy(authServiceUrl));
 app.use(cookieParser());
 app.use(
   '/chat',
   requireChatAuth,
-  proxy(`http://localhost:${process.env.CHAT_SERVICE_PORT || 3002}`, {
+  proxy(chatServiceUrl, {
     limit: '12mb',
     proxyReqOptDecorator(proxyReqOpts, srcReq) {
       const userId = srcReq.get('x-user-id');
@@ -55,7 +65,7 @@ app.use(
   '/agent',
   logAgentRequest,
   requireChatAuth,
-  proxy(`http://localhost:${process.env.AGENT_SERVICE_PORT || 3003}`, {
+  proxy(agentServiceUrl, {
     limit: '12mb',
     proxyErrorHandler(error, res) {
       console.error('[gateway] Agent upstream proxy failed:', error);
